@@ -119,6 +119,27 @@ class Comparison(DefaultTableMixin, UUIDMixin, WriteTrackingMixin):
             )) \
             .all()
 
+        answers_with_criterion_score = Answer.query \
+            .with_entities(Answer, AnswerCriterionScore.criterion_id, AnswerCriterionScore.score) \
+            .join(AnswerCriterionScore) \
+            .filter(and_(
+                Answer.user_id.notin_(ineligible_user_ids),
+                Answer.assignment_id == assignment_id,
+                Answer.active == True,
+                Answer.practice == False,
+                Answer.draft == False
+            )) \
+            .all()
+
+        assignment_criterion_weights = Assignment.query \
+            .with_entities(Assignment, AssignmentCriterion.criterion_id, AssignmentCriterion.weight) \
+            .join(AssignmentCriterion) \
+            .filter(and_(
+                Assignment.id == assignment_id,
+                AssignmentCriterion.active == True
+            )) \
+            .all()
+
         scored_objects = []
         for answer_with_score in answers_with_score:
             scored_objects.append(ScoredObject(
