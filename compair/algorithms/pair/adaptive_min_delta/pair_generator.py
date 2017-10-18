@@ -138,8 +138,8 @@ class AdaptiveMinDeltaPairGenerator(PairGenerator):
         criterion_scores_1 = self.criterion_scores.setdefault(scored_object_key1, {})
         criterion_scores_2 = self.criterion_scores.setdefault(scored_object_key2, {})
 
-        criterion_key_list = criterion_scores_1.keys()
-        criterion_key_list.extend(criterion_scores_2.keys())
+        criterion_key_list = list(criterion_scores_1.keys())
+        criterion_key_list.extend(list(criterion_scores_2.keys()))
         criterion_key_list = set(criterion_key_list)
 
         for criterion in criterion_key_list:
