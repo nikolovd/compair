@@ -285,7 +285,7 @@ def import_users(import_type, course, users):
 
 @api.representation('text/csv')
 def output_csv(data, code, headers=None):
-    fieldnames = ['username', 'cas_username', 'student_number', 'firstname', 'lastname', 'email', 'displayname', 'group_name']
+    fieldnames = ['username', 'student_number', 'firstname', 'lastname', 'displayname', 'group_name']
     csv_buffer = BytesIO()
     writer = csv.DictWriter(csv_buffer, fieldnames=fieldnames, extrasaction='ignore')
     writer.writeheader()
@@ -345,7 +345,6 @@ class ClasslistRootAPI(Resource):
                     (third_party_auth for third_party_auth in third_party_auths if third_party_auth.user_id == _user.id),
                     None
                 )
-                _user.cas_username = third_party_auth.unique_identifier if third_party_auth else None
 
             class_list.append(_user)
 
